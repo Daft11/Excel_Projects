@@ -1,10 +1,19 @@
 
+from tkinter import *
+from tkinter import filedialog
 import xlrd
 import openpyxl
 from openpyxl.workbook import Workbook
 
 article_list = []
 amount = []
+
+root = Tk()
+root.filename = filedialog.askopenfilename(filetypes=[("Xls files", "*.xls")])
+print(root.filename)
+file = str(root.filename.split('/')[-1])
+print(file)
+print(root.filename)
 
 # Забираем имя клиента из значений в таблице для имени файла
 
@@ -16,16 +25,6 @@ def file_name(file):
     if ':' in old_name:
         old_name = old_name.split(':')
         old_name = old_name[0]
-    # Проверяем имя на лишние символы
-    #i = 0
-    # while i != len(old_name):
-    #    # Когда наткнется на ':' остановится
-    #    if old_name[i] == ':':
-    #        break
-    #    else:
-    #        i += 1
-    # Забираем все символы до нежелательных двоеточий
-    #name = old_name[:i]
     print(str(old_name))
     file_name_func = old_name.replace(
         ' ', '_')+'_№'+str(int(sheet_active.cell_value(7, 7)))+'.xlsx'
@@ -110,9 +109,9 @@ def write_in_file(n_file, article, amount):
 
 
 # создаем имя для нового файла
-file_name = file_name('1.xls')
+file_name = file_name(file)
 # создаем новый файл и копируем данные из загруженного файла формата xls в новый созданный файл xlxs
-cvt_xls_to_xlsx('1.xls', file_name)
+cvt_xls_to_xlsx(file, file_name)
 # выбираем необходимые значения со всем фильтрами и записываем их в два списка
 article_list_data, amount_data = choose_article(file_name)
 # записываем получившиеся списки в новый файл
