@@ -10,10 +10,9 @@ amount = []
 
 root = Tk()
 root.filename = filedialog.askopenfilename(filetypes=[("Xls files", "*.xls")])
-print(root.filename)
 file = str(root.filename.split('/')[-1])
-print(file)
-print(root.filename)
+# print(root.filename)
+# print(file)
 
 # Забираем имя клиента из значений в таблице для имени файла
 
@@ -25,7 +24,7 @@ def file_name(file):
     if ':' in old_name:
         old_name = old_name.split(':')
         old_name = old_name[0]
-    print(str(old_name))
+    # print(str(old_name))
     file_name_func = old_name.replace(
         ' ', '_')+'_№'+str(int(sheet_active.cell_value(7, 7)))+'.xlsx'
     return file_name_func
@@ -85,7 +84,7 @@ def choose_article(n_file):
             iD = str('D' + str(index))
             iA = str('A' + str(index))
 
-    print(article_list, amount)
+    #print(article_list, amount)
     return article_list, amount
 
 # Запись всех данных в конечный документ и зачистка от нежелательных данных
@@ -111,8 +110,12 @@ def write_in_file(n_file, article, amount):
 # создаем имя для нового файла
 file_name = file_name(file)
 # создаем новый файл и копируем данные из загруженного файла формата xls в новый созданный файл xlxs
-cvt_xls_to_xlsx(file, file_name)
+# print(file)
+save_dst_folder = str(str(root.filename).split(file)[0])
+# print(save_dst_folder)
+save_dst = str(save_dst_folder) + '/' + str(file_name)
+cvt_xls_to_xlsx(file, save_dst)
 # выбираем необходимые значения со всем фильтрами и записываем их в два списка
-article_list_data, amount_data = choose_article(file_name)
+article_list_data, amount_data = choose_article(save_dst)
 # записываем получившиеся списки в новый файл
-write_in_file(file_name, article_list_data, amount_data)
+write_in_file(save_dst, article_list_data, amount_data)
